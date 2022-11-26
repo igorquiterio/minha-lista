@@ -7,17 +7,22 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
+    const minhaLista = db.collection('MinhaLista');
 
-    const listas = await db
-      .collection('MinhaLista')
-      .find({ slug })
-      .limit(10)
-      .toArray();
+    const listas = await minhaLista.find({ slug }).limit(10).toArray();
 
-    console.log(listas);
-
-    response.json(listas);
+    if (listas.length === 0) {
+      const lista = await minhaLista.insertOne({
+        name: slug,
+        items: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      response.status(201).json(lista);
+    } else {
+      response.status(200).json(listas);
+    }
   } catch (e) {
-    console.error(e);
+    response.status(500).json({ err: e });
   }
 };
