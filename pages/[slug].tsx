@@ -18,7 +18,7 @@ export async function getStaticProps(pageParams: PageParams) {
     const { slug } = pageParams.params;
 
     const response = axios
-      .post('http://localhost:3333/api/find', { slug })
+      .post('https://minha-lista.vercel.app/api/find', { slug })
       .then((res) => {
         console.log(res);
       });
