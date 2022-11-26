@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
+interface Items {
+  name: string;
+  quantity: number;
+}
 interface PageParams {
   params: { slug: string };
 }
@@ -10,6 +14,8 @@ interface PageProps {
 }
 
 function Lista({ slug }: PageProps) {
+  const [lista, setLista] = useState();
+
   return <h1>{slug}</h1>;
 }
 
@@ -17,16 +23,25 @@ export async function getStaticProps(pageParams: PageParams) {
   try {
     const { slug } = pageParams.params;
 
-    const response = axios
-      .post('https://minha-lista.vercel.app/api/find', { slug })
-      .then((res) => {
-        console.log(res);
-      });
+    const response = await axios.post(
+      'https://minha-lista.vercel.app/api/find',
+      { slug }
+    );
+
+    let id;
+    let itemList: Items[] = [];
+
+    if (response.status === 201) {
+      id = response.data.insertedId;
+    }
+
     console.log(response);
 
     return {
       props: {
-        slug: 'oi',
+        slug,
+        id,
+        list: itemList,
       },
     };
   } catch (error) {
@@ -34,6 +49,7 @@ export async function getStaticProps(pageParams: PageParams) {
       props: {
         client: {},
       },
+      revalidate: 5,
     };
   }
 }

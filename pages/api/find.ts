@@ -13,7 +13,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     if (listas.length === 0) {
       const lista = await minhaLista.insertOne({
-        name: slug,
+        slug,
         items: [],
         createdAt: new Date(),
         updatedAt: new Date(),
