@@ -15,6 +15,8 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: 15px 0;
+  cursor: pointer;
+  text-transform: capitalize;
   h1 {
     font-size: 36px;
   }
