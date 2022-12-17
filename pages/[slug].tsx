@@ -5,9 +5,12 @@ import {
   Check,
   CheckButton,
   Container,
+  Input,
   ItemContainer,
   Label,
   NameArea,
+  Plus,
+  Spinner,
 } from '../styles/lista';
 
 interface Items {
@@ -25,33 +28,66 @@ interface PageProps {
 }
 
 function Lista({ slug, id, itemList }: PageProps) {
-  // const [list, setList] = useState(itemList);
-  const [list, setList] = useState([
-    { name: 'abacaxi', quantity: 2 },
-    { name: 'melão', quantity: 3 },
-    { name: 'maça', quantity: 5 },
-    { name: 'teste', quantity: 0 },
-  ]);
+  const handleAddButton = () => {
+    setList((oldList) => [...oldList, currentItem]);
+    setCurrentItem({
+      name: '',
+      quantity: 0,
+    });
+    const response = axios.post('https://minha-lista.vercel.app/api/update', {
+      id,
+      slug,
+      items: list,
+    });
+    console.log(response);
+  };
+
+  const [list, setList] = useState(itemList);
+  const [currentItem, setCurrentItem] = useState<Items>({
+    name: '',
+    quantity: 0,
+  });
 
   return (
     <>
-      <Header title={slug} />
+      {slug ? <Header title={slug} /> : null}
       <Container>
-        {list.map((item) => {
-          return (
-            <>
-              <ItemContainer>
-                <NameArea>
-                  <Label>{item.name}</Label>
-                  {item.quantity ? <Label>{item.quantity}</Label> : null}
-                </NameArea>
-                <CheckButton>
-                  <Check />
-                </CheckButton>
-              </ItemContainer>
-            </>
-          );
-        })}
+        {slug ? (
+          list.map((item) => {
+            return (
+              <>
+                <ItemContainer>
+                  <NameArea>
+                    <Label>{item.name}</Label>
+                    {item.quantity ? <Label>{item.quantity}</Label> : null}
+                  </NameArea>
+                  <CheckButton onClick={() => console.log('oi')}>
+                    <Check />
+                  </CheckButton>
+                </ItemContainer>
+              </>
+            );
+          })
+        ) : (
+          <>
+            <Header title={'Carregando'} />
+            <Spinner />
+          </>
+        )}
+        <ItemContainer>
+          <NameArea>
+            <Input
+              placeholder='Nome do item'
+              value={currentItem.name}
+              onChange={(event) =>
+                setCurrentItem({ name: event.target.value, quantity: 0 })
+              }
+            />
+          </NameArea>
+          <CheckButton onClick={handleAddButton}>
+            <Plus />
+          </CheckButton>
+        </ItemContainer>
       </Container>
     </>
   );

@@ -1,6 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Lobster } from '@next/font/google';
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck, FaUndo, FaPlus } from 'react-icons/fa';
+
+const spin = keyframes`
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+`;
 
 const lobster = Lobster({
   weight: ['400'],
@@ -47,6 +56,7 @@ export const CheckButton = styled.button`
     width: 50px;
   }
 `;
+
 export const NameArea = styled.div`
   display: flex;
   padding: 5px 15px;
@@ -57,8 +67,28 @@ export const Label = styled.span`
   font-size: 24px;
   font-weight: 400;
   color: #ade792;
+  margin-right: 10px;
 `;
 export const Check = styled(FaCheck)`
   color: #344d67;
   font-size: 36px;
+`;
+export const Plus = styled(FaPlus)`
+  color: #344d67;
+  font-size: 36px;
+`;
+export const Spinner = styled(FaUndo)`
+  animation: 2s linear ${spin} infinite;
+  font-size: 120px;
+`;
+
+export const Input = styled.input`
+  min-height: 50px;
+  width: 850px;
+  border-radius: 10px;
+  background-color: #344d67;
+  color: #fff;
+  @media (max-width: 800px) {
+    width: 250px;
+  }
 `;

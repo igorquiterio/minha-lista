@@ -10,6 +10,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const minhaLista = db.collection('MinhaLista');
 
     const listas = await minhaLista.find({ slug }).limit(10).toArray();
+    console.log(listas);
 
     if (listas.length === 0) {
       const lista = await minhaLista.insertOne({
