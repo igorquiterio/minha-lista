@@ -1,6 +1,5 @@
 import clientPromise from '../../lib/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ObjectId } from 'mongodb';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {

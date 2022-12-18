@@ -12,7 +12,6 @@ import {
   Plus,
   Spinner,
 } from '../styles/lista';
-import { ObjectId } from 'bson';
 
 interface Items {
   name: string;
