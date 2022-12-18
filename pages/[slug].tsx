@@ -26,6 +26,7 @@ interface PageProps {
   slug: string;
   id: string;
   itemList: Items[];
+  createdAt: string;
 }
 
 function Lista({ slug, id, itemList, createdAt }: PageProps) {
