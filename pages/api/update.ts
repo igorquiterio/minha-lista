@@ -13,7 +13,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const lista = await minhaLista.updateOne(
       {
-        _id: new ObjectId(id),
+        _id: ObjectId(id),
       },
       {
         $set: {
