@@ -88,22 +88,24 @@ function Lista({ slug, id, itemList }: PageProps) {
             <Spinner />
           </>
         )}
-        <ItemContainer>
-          <NameArea>
-            <Input
-              placeholder='Nome do item'
-              value={currentItem.name}
-              onChange={(event) =>
-                setCurrentItem({ name: event.target.value, quantity: 0 })
-              }
-            />
-          </NameArea>
-          <CheckButton
-            onClick={() => (currentItem.name !== '' ? handleAddButton() : '')}
-          >
-            <Plus />
-          </CheckButton>
-        </ItemContainer>
+        {slug ? (
+          <ItemContainer>
+            <NameArea>
+              <Input
+                placeholder='Nome do item'
+                value={currentItem.name}
+                onChange={(event) =>
+                  setCurrentItem({ name: event.target.value, quantity: 0 })
+                }
+              />
+            </NameArea>
+            <CheckButton
+              onClick={() => (currentItem.name !== '' ? handleAddButton() : '')}
+            >
+              <Plus />
+            </CheckButton>
+          </ItemContainer>
+        ) : null}
       </Container>
     </>
   );
