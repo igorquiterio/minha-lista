@@ -25,11 +25,10 @@ interface PageParams {
 interface PageProps {
   slug: string;
   id: string;
-  itemList: Items[];
   createdAt: string;
 }
 
-function Lista({ slug, id, itemList, createdAt }: PageProps) {
+function Lista({ slug, id, createdAt }: PageProps) {
   const [list, setList] = useState<Items[]>([]);
   const [currentItem, setCurrentItem] = useState<Items>({
     name: '',
@@ -139,7 +138,9 @@ export async function getStaticProps(pageParams: PageParams) {
 
     const response = await axios.post(
       'https://minha-lista.vercel.app/api/find',
-      { slug }
+      {
+        slug,
+      }
     );
 
     let id = '0';
