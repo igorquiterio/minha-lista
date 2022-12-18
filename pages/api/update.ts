@@ -7,6 +7,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     const { id, slug, items } = request.body;
 
     const newId = new ObjectId(id);
+    console.log(newId, id);
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
