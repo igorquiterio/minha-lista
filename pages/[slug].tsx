@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Header } from '../components';
 import {
@@ -28,44 +28,58 @@ interface PageProps {
 }
 
 function Lista({ slug, id, itemList }: PageProps) {
-  const handleAddButton = () => {
-    setList((oldList) => [...oldList, currentItem]);
-    setCurrentItem({
-      name: '',
-      quantity: 0,
-    });
-    const response = axios.post('https://minha-lista.vercel.app/api/update', {
-      id,
-      slug,
-      items: list,
-    });
-    console.log(response);
-  };
+  console.log(itemList);
 
-  const [list, setList] = useState(itemList);
+  const [list, setList] = useState<Items[]>([]);
   const [currentItem, setCurrentItem] = useState<Items>({
     name: '',
     quantity: 0,
   });
+
+  useEffect(() => {
+    return setList(itemList);
+  }, [itemList]);
+
+  useEffect(() => {
+    axios.post('https://minha-lista.vercel.app/api/update', {
+      id,
+      slug,
+      items: list,
+    });
+  }, [list]);
+
+  const handleAddButton = async () => {
+    setList((old) => [...old, currentItem]);
+    setCurrentItem({
+      name: '',
+      quantity: 0,
+    });
+  };
+
+  const handleCheckButton = async (idx: number) => {
+    setList(
+      list.filter((ele, i) => {
+        return i !== idx;
+      })
+    );
+  };
 
   return (
     <>
       {slug ? <Header title={slug} /> : null}
       <Container>
         {slug ? (
-          list.map((item) => {
+          list?.map((item, idx) => {
             return (
-              <>
-                <ItemContainer>
-                  <NameArea>
-                    <Label>{item.name}</Label>
-                    {item.quantity ? <Label>{item.quantity}</Label> : null}
-                  </NameArea>
-                  <CheckButton onClick={() => console.log('oi')}>
-                    <Check />
-                  </CheckButton>
-                </ItemContainer>
-              </>
+              <ItemContainer key={`${idx}-${item}`}>
+                <NameArea>
+                  <Label>{item?.name}</Label>
+                  {item?.quantity ? <Label>{item?.quantity}</Label> : null}
+                </NameArea>
+                <CheckButton onClick={() => handleCheckButton(idx)}>
+                  <Check />
+                </CheckButton>
+              </ItemContainer>
             );
           })
         ) : (
@@ -84,7 +98,9 @@ function Lista({ slug, id, itemList }: PageProps) {
               }
             />
           </NameArea>
-          <CheckButton onClick={handleAddButton}>
+          <CheckButton
+            onClick={() => (currentItem.name !== '' ? handleAddButton() : '')}
+          >
             <Plus />
           </CheckButton>
         </ItemContainer>

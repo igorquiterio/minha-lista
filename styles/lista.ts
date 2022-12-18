@@ -88,6 +88,8 @@ export const Input = styled.input`
   border-radius: 10px;
   background-color: #344d67;
   color: #fff;
+  padding-left: 10px;
+
   @media (max-width: 800px) {
     width: 250px;
   }

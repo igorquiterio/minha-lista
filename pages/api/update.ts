@@ -1,9 +1,11 @@
 import clientPromise from '../../lib/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { ObjectId } from 'mongodb';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
     const { id, slug, items } = request.body;
+    console.log({ id, slug, items });
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
@@ -11,12 +13,14 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const lista = await minhaLista.updateOne(
       {
-        _id: id,
+        _id: ObjectId(id),
       },
       {
-        slug,
-        items,
-        updatedAt: new Date(),
+        $set: {
+          slug,
+          items,
+          updatedAt: new Date(),
+        },
       }
     );
 
