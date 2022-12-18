@@ -37,11 +37,24 @@ function Lista({ slug, id, itemList, createdAt }: PageProps) {
   });
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(itemList);
+  const populateList = async () => {
+    setLoading(true);
+    const response = await axios.post(
+      'https://minha-lista.vercel.app/api/find',
+      {
+        slug,
+      }
+    );
 
-    return setList(itemList);
-  }, [itemList]);
+    const newList = response.data[0].items;
+
+    setList(newList);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    populateList();
+  }, []);
 
   useEffect(() => {}, [list]);
 
