@@ -12,6 +12,7 @@ import {
   Plus,
   Spinner,
 } from '../styles/lista';
+import { Turret_Road } from '@next/font/google';
 
 interface Items {
   name: string;
@@ -29,15 +30,16 @@ interface PageProps {
 }
 
 function Lista({ slug, id, itemList, createdAt }: PageProps) {
-  console.log(itemList);
-
   const [list, setList] = useState<Items[]>([]);
   const [currentItem, setCurrentItem] = useState<Items>({
     name: '',
     quantity: 0,
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log(itemList);
+
     return setList(itemList);
   }, [itemList]);
 
@@ -49,12 +51,13 @@ function Lista({ slug, id, itemList, createdAt }: PageProps) {
       name: '',
       quantity: 0,
     });
-    axios.post('https://minha-lista.vercel.app/api/update', {
-      id,
+    setLoading(true);
+    await axios.post('https://minha-lista.vercel.app/api/update', {
       slug,
       items: [...list, currentItem],
       createdAt,
     });
+    setLoading(false);
   };
 
   const handleCheckButton = async (idx: number) => {
@@ -62,18 +65,19 @@ function Lista({ slug, id, itemList, createdAt }: PageProps) {
       return i !== idx;
     });
     setList(newList);
+    setLoading(true);
     axios.post('https://minha-lista.vercel.app/api/update', {
-      id,
       slug,
       items: newList,
     });
+    setLoading(false);
   };
 
   return (
     <>
       {slug ? <Header title={slug} /> : null}
       <Container>
-        {slug ? (
+        {slug && id !== '000' && !loading ? (
           list?.map((item, idx) => {
             return (
               <ItemContainer key={`${idx}-${item}`}>
@@ -93,7 +97,7 @@ function Lista({ slug, id, itemList, createdAt }: PageProps) {
             <Spinner />
           </>
         )}
-        {slug ? (
+        {slug && id !== '000' ? (
           <ItemContainer>
             <NameArea>
               <Input

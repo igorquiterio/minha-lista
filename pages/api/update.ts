@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
-    const { id, slug, items, createdAt } = request.body;
+    const { slug, items, createdAt } = request.body;
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
