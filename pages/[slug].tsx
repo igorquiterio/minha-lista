@@ -144,7 +144,6 @@ export async function getStaticProps(pageParams: PageParams) {
         id: '000',
         itemList: [],
       },
-      revalidate: 5,
     };
   }
 }

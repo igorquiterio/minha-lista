@@ -6,16 +6,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
     const { id, slug, items } = request.body;
 
-    const newId = new ObjectId(id);
-    console.log(newId, id);
-
     const client = await clientPromise;
     const db = client.db('MinhaLista');
     const minhaLista = db.collection('MinhaLista');
 
     const lista = await minhaLista.updateOne(
       {
-        _id: newId,
+        _id: new ObjectId(id),
       },
       {
         $set: {
