@@ -5,7 +5,8 @@ import { ObjectId } from 'bson';
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
     const { id, slug, items } = request.body;
-    console.log({ id, slug, items });
+
+    const newId = new ObjectId(id);
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
@@ -13,7 +14,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const lista = await minhaLista.updateOne(
       {
-        id,
+        _id: newId,
       },
       {
         $set: {

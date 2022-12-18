@@ -41,7 +41,7 @@ function Lista({ slug, id, itemList }: PageProps) {
   }, [itemList]);
 
   useEffect(() => {
-    axios.post('https://minha-lista.vercel.app/api/update', {
+    axios.post('http://localhost:3000/api/update', {
       id,
       slug,
       items: list,
