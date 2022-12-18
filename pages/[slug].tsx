@@ -40,28 +40,31 @@ function Lista({ slug, id, itemList }: PageProps) {
     return setList(itemList);
   }, [itemList]);
 
-  useEffect(() => {
-    axios.post('https://minha-lista.vercel.app/api/update', {
-      id,
-      slug,
-      items: list,
-    });
-  }, [list]);
+  useEffect(() => {}, [list]);
 
   const handleAddButton = async () => {
-    setList((old) => [...old, currentItem]);
+    setList([...list, currentItem]);
     setCurrentItem({
       name: '',
       quantity: 0,
     });
+    axios.post('https://minha-lista.vercel.app/api/update', {
+      id,
+      slug,
+      items: [...list, currentItem],
+    });
   };
 
   const handleCheckButton = async (idx: number) => {
-    setList(
-      list.filter((ele, i) => {
-        return i !== idx;
-      })
-    );
+    const newList = list.filter((ele, i) => {
+      return i !== idx;
+    });
+    setList(newList);
+    axios.post('https://minha-lista.vercel.app/api/update', {
+      id,
+      slug,
+      items: newList,
+    });
   };
 
   return (
