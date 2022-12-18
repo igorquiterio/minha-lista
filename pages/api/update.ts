@@ -4,22 +4,21 @@ import { ObjectId } from 'mongodb';
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
-    const { id, slug, items } = request.body;
+    const { id, slug, items, createdAt } = request.body;
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
     const minhaLista = db.collection('MinhaLista');
 
-    const lista = await minhaLista.updateOne(
+    const lista = await minhaLista.replaceOne(
       {
-        _id: id,
+        slug,
       },
       {
-        $set: {
-          slug,
-          items,
-          updatedAt: new Date(),
-        },
+        slug,
+        items,
+        updatedAt: new Date(),
+        createdAt,
       }
     );
 

@@ -12,6 +12,7 @@ import {
   Plus,
   Spinner,
 } from '../styles/lista';
+import { ObjectId } from 'bson';
 
 interface Items {
   name: string;
@@ -27,7 +28,7 @@ interface PageProps {
   itemList: Items[];
 }
 
-function Lista({ slug, id, itemList }: PageProps) {
+function Lista({ slug, id, itemList, createdAt }: PageProps) {
   console.log(itemList);
 
   const [list, setList] = useState<Items[]>([]);
@@ -52,6 +53,7 @@ function Lista({ slug, id, itemList }: PageProps) {
       id,
       slug,
       items: [...list, currentItem],
+      createdAt,
     });
   };
 
@@ -138,6 +140,7 @@ export async function getStaticProps(pageParams: PageParams) {
         slug,
         id,
         itemList,
+        createdAt: response.data[0].createdAt,
       },
     };
   } catch (error) {
