@@ -5,6 +5,8 @@ import { ObjectId } from 'mongodb';
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   try {
     const { id, slug, items } = request.body;
+    const newId = new ObjectId(id);
+    console.log({ id, newId, slug, items });
 
     const client = await clientPromise;
     const db = client.db('MinhaLista');
@@ -12,7 +14,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     const lista = await minhaLista.updateOne(
       {
-        _id: new ObjectId(id),
+        _id: newId,
       },
       {
         $set: {
