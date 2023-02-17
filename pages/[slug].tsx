@@ -76,7 +76,6 @@ function Lista({ slug, id, createdAt }: PageProps) {
       return i !== idx;
     });
     setList(newList);
-    setLoading(true);
     await axios.post('https://minha-lista.vercel.app/api/update', {
       slug,
       items: newList,
