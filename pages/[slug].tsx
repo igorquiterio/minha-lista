@@ -157,16 +157,10 @@ export async function getStaticProps(pageParams: PageParams) {
         id,
         itemList,
         createdAt: response.data[0].createdAt,
+         revalidate: 10, // In seconds
       },
     };
-  } catch (error) {
-    return {
-      props: {
-        slug: 'Erro tente novamente mais tarde',
-        id: '000',
-        itemList: [],
-      },
-    };
+  } 
   }
 }
 
@@ -174,7 +168,6 @@ export async function getStaticPaths() {
   return {
     paths: [],
     fallback: true,
-    revalidate: 500
   };
 }
 
