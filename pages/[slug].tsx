@@ -38,9 +38,11 @@ function Lista({ slug, id, createdAt }: PageProps) {
   });
   const [loading, setLoading] = useState(false);
   const debouncedRefresh = useDebounce(currentItem.name, 500);
+  const router = useRouter();
+  const query = router.query;
 
   const populateList = async (willShowLoading = false, pooling = false) => {
-    console.log(slug);
+    console.log(slug, slug);
     if (slug) {
       if (willShowLoading) setLoading(true);
       const response = await axios.post(
@@ -61,15 +63,11 @@ function Lista({ slug, id, createdAt }: PageProps) {
         }, 60000);
       }
     } else {
-      const router = useRouter();
-      const query = router.query;
-      console.log(query);
-
       setLoading(true);
       const response = await axios.post(
         'https://minha-lista.vercel.app/api/find',
         {
-          query,
+          slug,
         }
       );
 
@@ -77,6 +75,10 @@ function Lista({ slug, id, createdAt }: PageProps) {
 
       setList(newList);
       setLoading(false);
+
+      setTimeout(() => {
+        populateList(true, true);
+      }, 2000);
     }
   };
 
