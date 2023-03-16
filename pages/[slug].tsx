@@ -49,6 +49,10 @@ function Lista({ slug, id, createdAt }: PageProps) {
 
     setList(newList);
     setLoading(false);
+
+    setTimeout(() => {
+      populateList();
+    }, 60000);
   };
 
   useEffect(() => {
