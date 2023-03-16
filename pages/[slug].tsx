@@ -70,7 +70,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   }, [debouncedRefresh]);
 
   useEffect(() => {
-    populateList(true, true, 10000);
+    populateList(true, true, 13000);
   }, []);
 
   useEffect(() => {}, [list]);
@@ -105,7 +105,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
     <>
       {slug ? <Header title={slug} /> : null}
       <Container>
-        {slug && id !== '000' && !loading ? (
+        {slug && !loading ? (
           list?.map((item, idx) => {
             return (
               <ItemContainer key={`${idx}-${item}`}>
@@ -125,7 +125,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
             <Spinner />
           </>
         )}
-        {slug && id !== '000' ? (
+        {slug ? (
           <ItemContainer>
             <NameArea>
               <Input
