@@ -39,7 +39,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   const [loading, setLoading] = useState(false);
   const debouncedRefresh = useDebounce(currentItem.name, 500);
   const router = useRouter();
-  const query = router;
+  const query = router.asPath.replace('/', '');
 
   const populateList = async (willShowLoading = false, pooling = false) => {
     console.log(slug, query);
