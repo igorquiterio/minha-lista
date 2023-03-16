@@ -17,7 +17,7 @@ import { Turret_Road } from '@next/font/google';
 
 interface Items {
   name: string;
-  quantity: number;
+  quantity?: number;
 }
 interface PageParams {
   params: { slug: string };
@@ -39,6 +39,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   const debouncedRefresh = useDebounce(currentItem.name, 500);
 
   const populateList = async (willShowLoading = false, pooling = false) => {
+    console.log(slug);
     if (slug) {
       if (willShowLoading) setLoading(true);
       const response = await axios.post(
