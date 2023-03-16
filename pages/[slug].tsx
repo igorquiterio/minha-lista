@@ -42,7 +42,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   const query = router.query;
 
   const populateList = async (willShowLoading = false, pooling = false) => {
-    console.log(slug, slug);
+    console.log(slug, query);
     if (slug) {
       if (willShowLoading) setLoading(true);
       const response = await axios.post(
