@@ -65,7 +65,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
       const { pid } = router.query;
       console.log(pid);
 
-      if (willShowLoading) setLoading(true);
+      setLoading(true);
       const response = await axios.post(
         'https://minha-lista.vercel.app/api/find',
         {
