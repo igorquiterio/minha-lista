@@ -36,7 +36,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   });
   const [loading, setLoading] = useState(false);
 
-  const populateList = async (willShowLoading = false) => {
+  const populateList = async (timeout, willShowLoading = false) => {
     if (willShowLoading) setLoading(true);
     const response = await axios.post(
       'https://minha-lista.vercel.app/api/find',
@@ -51,12 +51,12 @@ function Lista({ slug, id, createdAt }: PageProps) {
     setLoading(false);
 
     setTimeout(() => {
-      populateList();
-    }, 60000);
+      populateList(timeout + 1000);
+    }, timeout);
   };
 
   useEffect(() => {
-    populateList(true);
+    populateList(10, true);
   }, []);
 
   useEffect(() => {}, [list]);
