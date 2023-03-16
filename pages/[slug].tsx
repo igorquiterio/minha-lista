@@ -173,7 +173,8 @@ export async function getStaticProps(pageParams: PageParams) {
 export async function getStaticPaths() {
   return {
     paths: [],
-    fallback: 'blocking'
+    fallback: 'blocking',
+    revalidate: 500
   };
 }
 
