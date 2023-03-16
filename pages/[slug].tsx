@@ -161,7 +161,6 @@ export async function getStaticProps(pageParams: PageParams) {
       },
     };
   } 
-  }
 }
 
 export async function getStaticPaths() {
