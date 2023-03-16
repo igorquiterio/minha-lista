@@ -12,6 +12,7 @@ import {
   Plus,
   Spinner,
 } from '../styles/lista';
+import useDebounce from '../hooks/useDebounce';
 import { Turret_Road } from '@next/font/google';
 
 interface Items {
@@ -35,8 +36,13 @@ function Lista({ slug, id, createdAt }: PageProps) {
     quantity: 0,
   });
   const [loading, setLoading] = useState(false);
+  const debouncedRefresh = useDebounce(currentItem.name, 500);
 
-  const populateList = async (timeout, willShowLoading = false) => {
+  const populateList = async (
+    willShowLoading = false,
+    pooling = false,
+    timeout = 60000
+  ) => {
     if (willShowLoading) setLoading(true);
     const response = await axios.post(
       'https://minha-lista.vercel.app/api/find',
@@ -50,13 +56,21 @@ function Lista({ slug, id, createdAt }: PageProps) {
     setList(newList);
     setLoading(false);
 
-    setTimeout(() => {
-      populateList(timeout + 1000);
-    }, timeout);
+    if (pooling) {
+      setTimeout(() => {
+        populateList();
+      }, timeout);
+    }
   };
 
   useEffect(() => {
-    populateList(10, true);
+    if (debouncedRefresh) {
+      populateList();
+    }
+  }, [debouncedRefresh]);
+
+  useEffect(() => {
+    populateList(true, true, 10);
   }, []);
 
   useEffect(() => {}, [list]);
@@ -117,9 +131,9 @@ function Lista({ slug, id, createdAt }: PageProps) {
               <Input
                 placeholder='Nome do item'
                 value={currentItem.name}
-                onChange={(event) =>
-                  setCurrentItem({ name: event.target.value, quantity: 0 })
-                }
+                onChange={(event) => {
+                  setCurrentItem({ name: event.target.value, quantity: 0 });
+                }}
               />
             </NameArea>
             <CheckButton
