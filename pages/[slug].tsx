@@ -36,8 +36,8 @@ function Lista({ slug, id, createdAt }: PageProps) {
   });
   const [loading, setLoading] = useState(false);
 
-  const populateList = async () => {
-    setLoading(true);
+  const populateList = async (willShowLoading = false) => {
+    if (willShowLoading) setLoading(true);
     const response = await axios.post(
       'https://minha-lista.vercel.app/api/find',
       {
@@ -52,7 +52,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   };
 
   useEffect(() => {
-    populateList();
+    populateList(true);
   }, []);
 
   useEffect(() => {}, [list]);
@@ -131,37 +131,31 @@ function Lista({ slug, id, createdAt }: PageProps) {
 }
 
 export async function getStaticProps(pageParams: PageParams) {
+  const { slug } = pageParams.params;
 
-    const { slug } = pageParams.params;
+  const response = await axios.post('https://minha-lista.vercel.app/api/find', {
+    slug,
+  });
 
-    const response = await axios.post(
-      'https://minha-lista.vercel.app/api/find',
-      {
-        slug,
-      }
-    );
+  let id = '0';
+  let itemList: Items[] = [];
 
-    let id = '0';
-    let itemList: Items[] = [];
+  if (response.status === 201) {
+    id = response.data.insertedId;
+  } else {
+    id = response.data[0]._id;
+    itemList = response.data[0].items;
+  }
 
-    if (response.status === 201) {
-      id = response.data.insertedId;
-    } else {
-      id = response.data[0]._id;
-      itemList = response.data[0].items;
-    }
-
-    return {
-      props: {
-        slug,
-        id,
-        itemList,
-        createdAt: response.data[0].createdAt,
-         revalidate: 10, // In seconds
-      },
-    };
-  
-  
+  return {
+    props: {
+      slug,
+      id,
+      itemList,
+      createdAt: response.data[0].createdAt,
+      revalidate: 10, // In seconds
+    },
+  };
 }
 
 export async function getStaticPaths() {
