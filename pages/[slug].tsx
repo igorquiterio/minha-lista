@@ -38,11 +38,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   const [loading, setLoading] = useState(false);
   const debouncedRefresh = useDebounce(currentItem.name, 500);
 
-  const populateList = async (
-    willShowLoading = false,
-    pooling = false,
-    timeout = 60000
-  ) => {
+  const populateList = async (willShowLoading = false, pooling = false) => {
     if (slug) {
       if (willShowLoading) setLoading(true);
       const response = await axios.post(
@@ -60,8 +56,12 @@ function Lista({ slug, id, createdAt }: PageProps) {
       if (pooling) {
         setTimeout(() => {
           populateList();
-        }, timeout);
+        }, 60000);
       }
+    } else {
+      setTimeout(() => {
+        populateList(willShowLoading, pooling);
+      }, 2000);
     }
   };
 
@@ -72,7 +72,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   }, [debouncedRefresh]);
 
   useEffect(() => {
-    populateList(true, true, 13000);
+    populateList(true, true);
   }, []);
 
   useEffect(() => {}, [list]);
