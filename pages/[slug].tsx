@@ -43,23 +43,25 @@ function Lista({ slug, id, createdAt }: PageProps) {
     pooling = false,
     timeout = 60000
   ) => {
-    if (willShowLoading) setLoading(true);
-    const response = await axios.post(
-      'https://minha-lista.vercel.app/api/find',
-      {
-        slug,
+    if (slug) {
+      if (willShowLoading) setLoading(true);
+      const response = await axios.post(
+        'https://minha-lista.vercel.app/api/find',
+        {
+          slug,
+        }
+      );
+
+      const newList = response.data[0].items;
+
+      setList(newList);
+      setLoading(false);
+
+      if (pooling) {
+        setTimeout(() => {
+          populateList();
+        }, timeout);
       }
-    );
-
-    const newList = response.data[0].items;
-
-    setList(newList);
-    setLoading(false);
-
-    if (pooling) {
-      setTimeout(() => {
-        populateList();
-      }, timeout);
     }
   };
 
