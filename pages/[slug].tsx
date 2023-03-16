@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { Header } from '../components';
 import {
   Check,
@@ -60,9 +61,20 @@ function Lista({ slug, id, createdAt }: PageProps) {
         }, 60000);
       }
     } else {
-      setTimeout(() => {
-        populateList(willShowLoading, pooling);
-      }, 2000);
+      const { pid } = router.query;
+
+      if (willShowLoading) setLoading(true);
+      const response = await axios.post(
+        'https://minha-lista.vercel.app/api/find',
+        {
+          pid,
+        }
+      );
+
+      const newList = response.data[0].items;
+
+      setList(newList);
+      setLoading(false);
     }
   };
 
@@ -73,9 +85,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
   }, [debouncedRefresh]);
 
   useEffect(() => {
-    setTimeout(() => {
-      populateList(true, true);
-    }, 500);
+    populateList(true, true);
   }, []);
 
   useEffect(() => {}, [list]);
