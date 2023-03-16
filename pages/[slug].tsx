@@ -61,6 +61,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
         }, 60000);
       }
     } else {
+      const router = useRouter();
       const { pid } = router.query;
 
       if (willShowLoading) setLoading(true);
