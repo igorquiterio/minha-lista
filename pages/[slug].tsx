@@ -72,7 +72,9 @@ function Lista({ slug, id, createdAt }: PageProps) {
   }, [debouncedRefresh]);
 
   useEffect(() => {
-    populateList(true, true);
+    setTimeout(() => {
+      populateList(true, true);
+    }, 2000);
   }, []);
 
   useEffect(() => {}, [list]);
