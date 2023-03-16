@@ -131,7 +131,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
 }
 
 export async function getStaticProps(pageParams: PageParams) {
-  try {
+
     const { slug } = pageParams.params;
 
     const response = await axios.post(
@@ -160,7 +160,8 @@ export async function getStaticProps(pageParams: PageParams) {
          revalidate: 10, // In seconds
       },
     };
-  } 
+  
+  
 }
 
 export async function getStaticPaths() {
