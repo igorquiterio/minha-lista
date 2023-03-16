@@ -62,14 +62,14 @@ function Lista({ slug, id, createdAt }: PageProps) {
       }
     } else {
       const router = useRouter();
-      const { pid } = router.query;
-      console.log(pid);
+      const query = router.query;
+      console.log(query);
 
       setLoading(true);
       const response = await axios.post(
         'https://minha-lista.vercel.app/api/find',
         {
-          pid,
+          query,
         }
       );
 
