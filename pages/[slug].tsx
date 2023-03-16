@@ -63,6 +63,7 @@ function Lista({ slug, id, createdAt }: PageProps) {
     } else {
       const router = useRouter();
       const { pid } = router.query;
+      console.log(pid);
 
       if (willShowLoading) setLoading(true);
       const response = await axios.post(
