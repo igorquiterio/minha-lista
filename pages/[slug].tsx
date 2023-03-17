@@ -42,39 +42,24 @@ function Lista({ slug, id, createdAt }: PageProps) {
   const query = router.asPath.replace('/', '');
 
   const populateList = async (willShowLoading = false, pooling = false) => {
-    console.log(slug, query);
-    if (slug) {
-      if (willShowLoading) setLoading(true);
-      const response = await axios.post(
-        'https://minha-lista.vercel.app/api/find',
-        {
-          slug,
-        }
-      );
+    if (willShowLoading) setLoading(true);
 
-      const newList = response.data[0].items;
-
-      setList(newList);
-      setLoading(false);
-
-      if (pooling) {
-        setTimeout(() => {
-          populateList();
-        }, 60000);
+    const response = await axios.post(
+      'https://minha-lista.vercel.app/api/find',
+      {
+        slug: slug || query,
       }
-    } else {
-      setLoading(true);
-      const response = await axios.post(
-        'https://minha-lista.vercel.app/api/find',
-        {
-          query,
-        }
-      );
+    );
 
-      const newList = response.data[0].items;
+    const newList = response.data[0].items;
 
-      setList(newList);
-      setLoading(false);
+    setList(newList);
+
+    setLoading(false);
+    if (pooling) {
+      setTimeout(() => {
+        populateList();
+      }, 60000);
     }
   };
 
